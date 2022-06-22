@@ -100,7 +100,7 @@ public class PostgresDatabase extends Construct {
       .engine("postgres")
       .engineVersion(databaseInputParameters.postgresVersion)
       .masterUsername(username)
-      .masterUserPassword(databaseSecret.secretValueFromJson("password").toString())
+      .masterUserPassword(databaseSecret.secretValueFromJson("password").unsafeUnwrap().toString())
       .publiclyAccessible(false)
       .vpcSecurityGroups(Collections.singletonList(databaseSecurityGroup.getAttrGroupId()))
       .build();
@@ -222,8 +222,8 @@ public class PostgresDatabase extends Construct {
 
   public static class DatabaseInputParameters {
     private int storageInGb = 20;
-    private String instanceClass = "db.t2.micro";
-    private String postgresVersion = "12.9";
+    private String instanceClass = "db.t4g.micro";
+    private String postgresVersion = "14.2";
 
     /**
      * The storage allocated for the database in GB.
@@ -238,7 +238,7 @@ public class PostgresDatabase extends Construct {
     /**
      * The class of the database instance.
      * <p>
-     * Default: "db.t2.micro".
+     * Default: "db.t4g.micro".
      */
     public DatabaseInputParameters withInstanceClass(String instanceClass) {
       Objects.requireNonNull(instanceClass);
